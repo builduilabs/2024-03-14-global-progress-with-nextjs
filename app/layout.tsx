@@ -22,7 +22,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* <Nav /> */}
-        <NavFramerMotion />
 
         {/* <nav className="m-4 flex gap-4">
           <ProgressLink href="/">Home</ProgressLink>
@@ -31,7 +30,7 @@ export default function RootLayout({
           <ProgressLink href="/post/3">Post 3</ProgressLink>
         </nav> */}
 
-        <main className="m-4">{children}</main>
+        {children}
       </body>
     </html>
   );
