@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { GlobalProgress, ProgressLink } from "./global-progress";
+import Nav from "./nav";
+import NavFramerMotion from "./nav-framer-motion";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +20,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {/* <Nav /> */}
+        <NavFramerMotion />
+
+        {/* <nav className="m-4 flex gap-4">
+          <ProgressLink href="/">Home</ProgressLink>
+          <ProgressLink href="/post/1">Post 1</ProgressLink>
+          <ProgressLink href="/post/2">Post 2</ProgressLink>
+          <ProgressLink href="/post/3">Post 3</ProgressLink>
+        </nav> */}
+
+        <main className="m-4">{children}</main>
+      </body>
     </html>
   );
 }
