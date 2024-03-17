@@ -6,16 +6,23 @@ export default function useProgress() {
   let [state, setState] = useState<
     "initial" | "in-progress" | "completing" | "complete"
   >("initial");
-  let progress = useSpring(0, { bounce: 0, duration: 400 });
+  let progress = useSpring(0, { bounce: 0, duration: 350 });
 
   useInterval(
     () => {
-      let remaining = 100 - progress.get();
-      let newProgress = progress.get() + remaining / 4;
+      let diff;
 
-      progress.set(newProgress);
+      if (progress.get() === 0) {
+        diff = rand(15, 20);
+      } else if (progress.get() < 50) {
+        diff = rand(5, 10);
+      } else {
+        diff = rand(1, 5);
+      }
+
+      progress.set(Math.min(progress.get() + diff, 99));
     },
-    state === "in-progress" ? 1500 : null
+    state === "in-progress" ? 750 : null
   );
 
   useMotionValueEvent(progress, "change", (v) => {
@@ -30,7 +37,9 @@ export default function useProgress() {
   }
 
   function start() {
-    if (state === "complete") {
+    if (state === "in-progress") {
+      return;
+    } else if (state === "complete") {
       progress.jump(0);
     }
 
@@ -46,4 +55,8 @@ export default function useProgress() {
   }
 
   return { state, progress, start, finish, restart };
+}
+
+function rand(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

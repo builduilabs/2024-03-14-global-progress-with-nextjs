@@ -21,7 +21,7 @@ export default function Page() {
     <div className="h-screen relative flex flex-col">
       <GlobalProgress state={state} progress={progress} restart={restart} />
 
-      <Spinner state={state} progress={progress} restart={restart} />
+      {/* <Spinner state={state} progress={progress} restart={restart} /> */}
 
       <div className="mx-4 my-8 flex grow items-center justify-center gap-4">
         <button
@@ -122,8 +122,8 @@ function GlobalProgress({
       {state !== "complete" && (
         <motion.div
           style={{ width }}
-          exit={{ opacity: 0 }}
-          className="fixed h-1 bg-sky-500 top-0"
+          exit={{ opacity: 0, transition: { delay: 0.1, duration: 0.2 } }}
+          className="fixed h-2 shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
         />
 
         // <motion.div
