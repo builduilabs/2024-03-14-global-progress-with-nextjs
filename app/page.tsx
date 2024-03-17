@@ -57,42 +57,39 @@ export default function Page() {
   }
 
   let progressLog = useTransform(progress, (v) => Math.floor(v));
-  let pathLength = useTransform(progress, (v) => v / 100);
-
-  useMotionValueEvent(pathLength, "change", (v) => {
-    console.log(v);
-  });
+  // let pathLength = useTransform(progress, (v) => v / 100);
 
   return (
     <div className="h-screen relative flex flex-col">
       <AnimatePresence onExitComplete={restart}>
         {state !== "complete" && (
-          // <motion.div
-          //   style={{ width }}
-          //   exit={{ opacity: 0 }}
-          //   className="fixed h-1 bg-green-500 top-0"
-          // />
           <motion.div
-            className="w-full flex justify-center items-center"
-            key="foo"
+            style={{ width }}
             exit={{ opacity: 0 }}
-          >
-            <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
-              <motion.circle
-                style={{ pathLength }}
-                cx="60"
-                cy="60"
-                r="50"
-                stroke="currentColor"
-                className={`text-sky-500 ${
-                  state === "initial" ? "opacity-0" : ""
-                }`}
-                strokeWidth={6}
-                fill="none"
-                strokeLinecap="round"
-              />
-            </svg>
-          </motion.div>
+            className="fixed h-1 bg-sky-500 top-0"
+          />
+
+          // <motion.div
+          //   className="w-full flex justify-center items-center"
+          //   key="foo"
+          //   exit={{ opacity: 0 }}
+          // >
+          //   <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
+          //     <motion.circle
+          //       style={{ pathLength }}
+          //       cx="60"
+          //       cy="60"
+          //       r="50"
+          //       stroke="currentColor"
+          //       className={`text-sky-500 ${
+          //         state === "initial" ? "opacity-0" : ""
+          //       }`}
+          //       strokeWidth={6}
+          //       fill="none"
+          //       strokeLinecap="round"
+          //     />
+          //   </svg>
+          // </motion.div>
         )}
       </AnimatePresence>
 
@@ -183,8 +180,8 @@ export default function Page() {
   );
 }
 
-function useInterval(callback, delay) {
-  const intervalRef = useRef(null);
+function useInterval(callback: () => void, delay: number | null) {
+  const intervalRef = useRef<number>();
   const savedCallback = useRef(callback);
 
   useEffect(() => {
@@ -193,12 +190,15 @@ function useInterval(callback, delay) {
 
   useEffect(() => {
     const tick = () => savedCallback.current();
+
     if (typeof delay === "number") {
       tick();
       intervalRef.current = window.setInterval(tick, delay);
+
       return () => window.clearInterval(intervalRef.current);
     }
   }, [delay]);
+
   return intervalRef;
 }
 
