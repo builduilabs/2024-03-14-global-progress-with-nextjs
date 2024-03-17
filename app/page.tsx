@@ -5,93 +5,23 @@ import {
   AnimatePresence,
   motion,
   useMotionTemplate,
-  useMotionValueEvent,
-  useSpring,
   useTransform,
 } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import useProgress from "./use-progress";
 
 export default function Page() {
   let [isShowingInfo, setIsShowingInfo] = useState(false);
-  let [state, setState] = useState<
-    "initial" | "in-progress" | "completing" | "complete"
-  >("initial");
-  let progress = useSpring(0, { bounce: 0, duration: 400 });
-  let width = useMotionTemplate`${progress}%`;
 
-  useInterval(
-    () => {
-      let remaining = 100 - progress.get();
-      let newProgress = progress.get() + remaining / 4;
-
-      progress.set(newProgress);
-    },
-    state === "in-progress" ? 1500 : null
-  );
-
-  useMotionValueEvent(progress, "change", (v) => {
-    if (v === 100) {
-      setState("complete");
-    }
-  });
-
-  function restart() {
-    progress.jump(0);
-    setState("initial");
-  }
-
-  function start() {
-    if (state === "complete") {
-      progress.jump(0);
-    }
-
-    setState("in-progress");
-  }
-
-  function finish() {
-    if (state === "complete") {
-      progress.jump(0);
-    }
-    progress.set(100);
-    setState("completing");
-  }
+  let { state, progress, start, finish, restart } = useProgress();
 
   let progressLog = useTransform(progress, (v) => Math.floor(v));
-  // let pathLength = useTransform(progress, (v) => v / 100);
 
   return (
     <div className="h-screen relative flex flex-col">
-      <AnimatePresence onExitComplete={restart}>
-        {state !== "complete" && (
-          <motion.div
-            style={{ width }}
-            exit={{ opacity: 0 }}
-            className="fixed h-1 bg-sky-500 top-0"
-          />
+      <GlobalProgress state={state} progress={progress} restart={restart} />
 
-          // <motion.div
-          //   className="w-full flex justify-center items-center"
-          //   key="foo"
-          //   exit={{ opacity: 0 }}
-          // >
-          //   <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
-          //     <motion.circle
-          //       style={{ pathLength }}
-          //       cx="60"
-          //       cy="60"
-          //       r="50"
-          //       stroke="currentColor"
-          //       className={`text-sky-500 ${
-          //         state === "initial" ? "opacity-0" : ""
-          //       }`}
-          //       strokeWidth={6}
-          //       fill="none"
-          //       strokeLinecap="round"
-          //     />
-          //   </svg>
-          // </motion.div>
-        )}
-      </AnimatePresence>
+      <Spinner state={state} progress={progress} restart={restart} />
 
       <div className="mx-4 my-8 flex grow items-center justify-center gap-4">
         <button
@@ -180,36 +110,80 @@ export default function Page() {
   );
 }
 
-function useInterval(callback: () => void, delay: number | null) {
-  const intervalRef = useRef<number>();
-  const savedCallback = useRef(callback);
+function GlobalProgress({
+  state,
+  progress,
+  restart,
+}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "restart">) {
+  let width = useMotionTemplate`${progress}%`;
 
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
+  return (
+    <AnimatePresence onExitComplete={restart}>
+      {state !== "complete" && (
+        <motion.div
+          style={{ width }}
+          exit={{ opacity: 0 }}
+          className="fixed h-1 bg-sky-500 top-0"
+        />
 
-  useEffect(() => {
-    const tick = () => savedCallback.current();
-
-    if (typeof delay === "number") {
-      tick();
-      intervalRef.current = window.setInterval(tick, delay);
-
-      return () => window.clearInterval(intervalRef.current);
-    }
-  }, [delay]);
-
-  return intervalRef;
+        // <motion.div
+        //   className="w-full flex justify-center items-center"
+        //   key="foo"
+        //   exit={{ opacity: 0 }}
+        // >
+        //   <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
+        //     <motion.circle
+        //       style={{ pathLength }}
+        //       cx="60"
+        //       cy="60"
+        //       r="50"
+        //       stroke="currentColor"
+        //       className={`text-sky-500 ${
+        //         state === "initial" ? "opacity-0" : ""
+        //       }`}
+        //       strokeWidth={6}
+        //       fill="none"
+        //       strokeLinecap="round"
+        //     />
+        //   </svg>
+        // </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
-// Sigmoid-based decay function
-function decay(value: number, max: number) {
-  if (max === 0) {
-    return 0;
-  }
+function Spinner({
+  state,
+  progress,
+  restart,
+}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "restart">) {
+  let pathLength = useTransform(progress, (v) => v / 100);
 
-  let entry = value / max;
-  let sigmoid = 2 * (1 / (1 + Math.exp(-entry)) - 0.5);
-
-  return sigmoid * max;
+  return (
+    <AnimatePresence onExitComplete={restart}>
+      {state !== "complete" && (
+        <motion.div
+          className="w-full flex justify-center items-center"
+          key="foo"
+          exit={{ opacity: 0 }}
+        >
+          <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
+            <motion.circle
+              style={{ pathLength }}
+              cx="60"
+              cy="60"
+              r="50"
+              stroke="currentColor"
+              className={`text-sky-500 ${
+                state === "initial" ? "opacity-0" : ""
+              }`}
+              strokeWidth={6}
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
