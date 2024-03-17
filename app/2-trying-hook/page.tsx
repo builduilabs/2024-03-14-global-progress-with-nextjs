@@ -43,7 +43,7 @@ function GlobalProgress({
         <motion.div
           style={{ width }}
           exit={{ opacity: 0, transition: { delay: 0.1, duration: 0.2 } }}
-          className="fixed h-2 shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
+          className="fixed h-1 shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
         />
       )}
     </AnimatePresence>
