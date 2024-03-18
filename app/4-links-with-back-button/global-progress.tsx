@@ -1,8 +1,16 @@
 "use client";
 
-import { ReactNode, createContext, useContext } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import useProgress from "../use-progress";
 import { AnimatePresence, motion, useMotionTemplate } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
 
 export const GlobalProgressContext = createContext<ReturnType<
   typeof useProgress
@@ -21,9 +29,44 @@ export function useGlobalProgress() {
 export default function GlobalProgress({ children }: { children: ReactNode }) {
   let progress = useProgress();
   let width = useMotionTemplate`${progress.progress}%`;
+  let [didUseBrowserNavigation, setDidUseBrowserNavigation] = useState(false);
+  let [isPending, startTransition] = useTransition();
+  let router = useRouter();
+
+  // useEffect(() => {
+  //   function handleBack(event: PopStateEvent) {
+  //     // event.state
+  //     // console.log(event.state);
+  //     // console.log("start");
+  //     // setDidUseBrowserNavigation(true);
+
+  //     progress.start();
+
+  //     startTransition(() => {
+  //       router.push(window.location.pathname);
+  //     });
+  //   }
+  //   //
+  //   window.addEventListener("popstate", handleBack);
+
+  //   return () => {
+  //     console.log("cleanup");
+  //     window.removeEventListener("popstate", handleBack);
+  //   };
+  // }, [progress, router]);
+
+  // useEffect(() => {
+  //   if (!isPending && didUseBrowserNavigation) {
+  //     console.log("finish");
+  //     progress.finish();
+  //     setDidUseBrowserNavigation(false);
+  //   }
+  // }, [didUseBrowserNavigation, isPending, progress]);
 
   return (
     <GlobalProgressContext.Provider value={progress}>
+      <GlobalProgressForBrowserNavigation />
+
       <AnimatePresence onExitComplete={progress.restart}>
         {progress.state !== "complete" && (
           <motion.div
@@ -35,5 +78,87 @@ export default function GlobalProgress({ children }: { children: ReactNode }) {
       </AnimatePresence>
       {children}
     </GlobalProgressContext.Provider>
+  );
+}
+
+function GlobalProgressForBrowserNavigation() {
+  let progress = useGlobalProgress();
+  let pathname = usePathname();
+  let [newPathname, setNewPathname] = useState<string>();
+  let [didPopState, setDidPopState] = useState(false);
+  let popStateIsPending = didPopState && newPathname !== pathname;
+  let [previousPopStateIsPending, setPreviousPopStateIsPending] =
+    useState(popStateIsPending);
+
+  if (didPopState && newPathname === pathname) {
+    setDidPopState(false);
+  }
+
+  // if (previousPopStateIsPending !== popStateIsPending) {
+  //   console.log("here");
+  //   progress.finish();
+  // }
+  useEffect(() => {
+    console.log("effect");
+    if (previousPopStateIsPending !== popStateIsPending) {
+      console.log("here");
+      if (!popStateIsPending) {
+        progress.finish();
+      }
+
+      setPreviousPopStateIsPending(popStateIsPending);
+    }
+  }, [popStateIsPending, previousPopStateIsPending, progress]);
+
+  // if (popStateIsPending) {
+  //   console.log("pending");
+  // }
+  // console.log(popStateIsPending);
+
+  // }, [didPopState, newPathname, pathname, progress]);
+  // if (popStateIsPending) {
+  //   progress.finish();
+  //   console.log("pending");
+  // }
+
+  // useEffect(() => {
+  //   if (!popStateIsPending) {
+  //     console.log("here");
+  //     progress.finish();
+  //   }
+  // }, [popStateIsPending, progress]);
+
+  // console.log(popStateIsPending);
+
+  // useEffect(() => {
+  //   if (didPopState) {
+  //     if (newPathname !== pathname) {
+  //       //   progress.start();
+  //       // } else {
+  //       progress.finish();
+  //       setDidPopState(false);
+  //     }
+  //   }
+  // }, [didPopState, newPathname, pathname, progress]);
+
+  useEffect(() => {
+    function handleBack() {
+      // progress.start();
+      setDidPopState(true);
+      setNewPathname(window.location.pathname);
+    }
+
+    window.addEventListener("popstate", handleBack);
+
+    return () => {
+      window.removeEventListener("popstate", handleBack);
+    };
+  }, [progress]);
+
+  // return null;
+  return (
+    <div className="m-4">
+      <p>popStateIsPending: {popStateIsPending ? "yes" : "no"}</p>
+    </div>
   );
 }
