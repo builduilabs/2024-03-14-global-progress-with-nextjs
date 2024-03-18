@@ -109,7 +109,7 @@ function GlobalProgressForBrowserNavigation() {
     if (previousPopStateIsPending !== popStateIsPending) {
       // console.log("here");
       if (!popStateIsPending) {
-        progress.finish();
+        // progress.finish();
       }
 
       setPreviousPopStateIsPending(popStateIsPending);
@@ -149,26 +149,26 @@ function GlobalProgressForBrowserNavigation() {
 
   useEffect(() => {
     function handleBack() {
-      // progress.start();
-      console.log("here??");
+      console.log(window.location.pathname);
       setNewPathname(window.location.pathname);
       setDidPopState(true);
+      progress.start();
     }
 
     window.addEventListener("popstate", handleBack);
 
     return () => {
-      // console.log("cleanup");
+      console.log("cleanup");
       window.removeEventListener("popstate", handleBack);
     };
-  }, []);
+  }, [progress]);
 
   // return null;
   return (
     <div className="m-4">
-      <p>popStateIsPending: {popStateIsPending ? "yes" : "no"}</p>
+      {/* <p>popStateIsPending: {popStateIsPending ? "yes" : "no"}</p>
       <p>pathname: {pathname}</p>
-      <p>didPopState: {didPopState ? "true" : "false"}</p>
+      <p>didPopState: {didPopState ? "true" : "false"}</p> */}
       <p>newPathname: {newPathname}</p>
     </div>
   );
