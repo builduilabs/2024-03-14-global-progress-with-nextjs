@@ -37,12 +37,12 @@ export default function useProgress() {
   }
 
   function start() {
-    if (state === "in-progress") {
-      return;
-    } else if (state === "complete") {
+    if (state === "complete") {
+      // console.log(2);
       progress.jump(0);
     }
 
+    // console.log(3);
     setState("in-progress");
   }
 

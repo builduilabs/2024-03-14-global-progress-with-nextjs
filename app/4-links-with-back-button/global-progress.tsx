@@ -3,6 +3,7 @@
 import {
   ReactNode,
   createContext,
+  startTransition,
   useContext,
   useEffect,
   useState,
@@ -87,89 +88,44 @@ function GlobalProgressForBrowserNavigation() {
   let [newPathname, setNewPathname] = useState<string>();
   let [didPopState, setDidPopState] = useState(false);
   let popStateIsPending = didPopState && newPathname !== pathname;
-  let [previousPopStateIsPending, setPreviousPopStateIsPending] =
-    useState(popStateIsPending);
-
-  // console.log({ didPopState, newPathname, pathname });
-  // if (didPopState) {
-  //   console.log({ pathname, newPathname });
-  // }
-  if (didPopState && newPathname === pathname) {
-    setDidPopState(false);
-  }
-
-  // if (previousPopStateIsPending !== popStateIsPending) {
-  //   console.log("here");
-  //   progress.finish();
-  // }
-  // console.log("render");
 
   useEffect(() => {
-    // console.log("effect");
-    if (previousPopStateIsPending !== popStateIsPending) {
-      // console.log("here");
-      if (!popStateIsPending) {
-        // progress.finish();
+    startTransition(() => {
+      if (didPopState) {
+        if (newPathname !== pathname) {
+          progress.start();
+        } else {
+          progress.finish();
+          setDidPopState(false);
+        }
       }
-
-      setPreviousPopStateIsPending(popStateIsPending);
-    }
-  }, [popStateIsPending, previousPopStateIsPending, progress]);
-
-  // if (popStateIsPending) {
-  //   console.log("pending");
-  // }
-  // console.log(popStateIsPending);
-
-  // }, [didPopState, newPathname, pathname, progress]);
-  // if (popStateIsPending) {
-  //   progress.finish();
-  //   console.log("pending");
-  // }
-
-  // useEffect(() => {
-  //   if (!popStateIsPending) {
-  //     console.log("here");
-  //     progress.finish();
-  //   }
-  // }, [popStateIsPending, progress]);
-
-  // console.log(popStateIsPending);
-
-  // useEffect(() => {
-  //   if (didPopState) {
-  //     if (newPathname !== pathname) {
-  //       //   progress.start();
-  //       // } else {
-  //       progress.finish();
-  //       setDidPopState(false);
-  //     }
-  //   }
-  // }, [didPopState, newPathname, pathname, progress]);
+    });
+  }, [didPopState, newPathname, pathname, popStateIsPending, progress]);
 
   useEffect(() => {
     function handleBack() {
-      console.log(window.location.pathname);
-      setNewPathname(window.location.pathname);
-      setDidPopState(true);
-      progress.start();
+      startTransition(() => {
+        setNewPathname(window.location.pathname);
+        setDidPopState(true);
+      });
     }
 
     window.addEventListener("popstate", handleBack);
 
     return () => {
-      console.log("cleanup");
       window.removeEventListener("popstate", handleBack);
     };
-  }, [progress]);
+  }, []);
 
-  // return null;
+  return null;
+
   return (
     <div className="m-4">
-      {/* <p>popStateIsPending: {popStateIsPending ? "yes" : "no"}</p>
-      <p>pathname: {pathname}</p>
-      <p>didPopState: {didPopState ? "true" : "false"}</p> */}
-      <p>newPathname: {newPathname}</p>
+      {/* <p>popStateIsPending: {popStateIsPending ? "yes" : "no"}</p> */}
+      {/* <p>pathname: {pathname}</p> */}
+      {/* <p>isPunding: {isPending ? "yes" : "no"}</p> */}
+      {/* <p>didPopState: {didPopState ? "true" : "false"}</p> */}
+      {/* <p>newPathname: {newPathname}</p> */}
     </div>
   );
 }
