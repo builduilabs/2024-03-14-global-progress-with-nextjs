@@ -4,8 +4,10 @@ import {
   ReactNode,
   createContext,
   startTransition,
+  use,
   useContext,
   useEffect,
+  useOptimistic,
   useState,
   useTransition,
 } from "react";
@@ -82,32 +84,54 @@ export default function GlobalProgress({ children }: { children: ReactNode }) {
   );
 }
 
+const cache: Promise<Date>[] = [];
+
+function getData(key: number) {
+  if (!cache[key]) {
+    cache[key] = new Promise((resolve) =>
+      setTimeout(() => resolve(new Date()), 500)
+    );
+  }
+
+  return cache[key];
+}
+
 function GlobalProgressForBrowserNavigation() {
   let progress = useGlobalProgress();
   let pathname = usePathname();
   let [newPathname, setNewPathname] = useState<string>();
   let [didPopState, setDidPopState] = useState(false);
   let popStateIsPending = didPopState && newPathname !== pathname;
+  // let [isPending, startTransition] = useTransition();
+  let [isPending, setIsPending] = useOptimistic(false);
+  let [count, setCount] = useState(0);
 
-  useEffect(() => {
-    startTransition(() => {
-      if (didPopState) {
-        if (newPathname !== pathname) {
-          progress.start();
-        } else {
-          progress.finish();
-          setDidPopState(false);
-        }
-      }
-    });
-  }, [didPopState, newPathname, pathname, popStateIsPending, progress]);
+  use(getData(count));
+
+  // useEffect(() => {
+  //   startTransition(() => {
+  //     if (didPopState) {
+  //       if (newPathname !== pathname) {
+  //         progress.start();
+  //       } else {
+  //         progress.finish();
+  //         setDidPopState(false);
+  //       }
+  //     }
+  //   });
+  // }, [didPopState, newPathname, pathname, popStateIsPending, progress]);
 
   useEffect(() => {
     function handleBack() {
-      startTransition(() => {
-        setNewPathname(window.location.pathname);
-        setDidPopState(true);
-      });
+      setTimeout(() => {
+        startTransition(() => {
+          // setNewPathname(window.location.pathname);
+          // setDidPopState(true);
+          // setIsPending(true);
+          setCount((count) => count + 1);
+          setIsPending(true);
+        });
+      }, 100);
     }
 
     window.addEventListener("popstate", handleBack);
@@ -115,9 +139,14 @@ function GlobalProgressForBrowserNavigation() {
     return () => {
       window.removeEventListener("popstate", handleBack);
     };
-  }, []);
+  }, [setIsPending]);
 
-  return null;
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>Is pending: {isPending ? "true" : "false"}</p>
+    </div>
+  );
 
   return (
     <div className="m-4">

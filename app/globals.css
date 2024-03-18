@@ -11,6 +11,17 @@
   }
 }
 
+@keyframes flash {
+  0% {
+    /* @apply bg-sky-500 */
+    background-color: rgb(14 165 233);
+    /* opacity: 0; */
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 /* Make clicks pass-through */
 #nprogress {
   pointer-events: none;
