@@ -16,6 +16,8 @@ export const ProgressBarContext = createContext<ReturnType<
   typeof useProgress
 > | null>(null);
 
+// store
+
 export function useProgressBar() {
   let progress = useContext(ProgressBarContext);
 
@@ -26,7 +28,7 @@ export function useProgressBar() {
   return progress;
 }
 
-export default function GlobalProgress({ children }: { children: ReactNode }) {
+export function ProgressBarRoot({ children }: { children: ReactNode }) {
   let progress = useProgress();
   let width = useMotionTemplate`${progress.progress}%`;
 

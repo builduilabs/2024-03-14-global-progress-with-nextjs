@@ -25,21 +25,21 @@ export default function Page() {
 
       <div className="mx-4 my-8 flex grow items-center justify-center gap-4">
         <button
-          disabled={state === "initial"}
+          // disabled={state === "initial"}
           className="transition bg-gray-600 text-sm font-semibold rounded px-3 py-1.5 enabled:hover:bg-gray-500 disabled:opacity-50"
           onClick={restart}
         >
           Restart
         </button>
         <button
-          disabled={state === "in-progress"}
+          // disabled={state === "in-progress"}
           className="transition bg-gray-600 disabled:opacity-50 text-sm font-semibold rounded px-3 py-1.5 enabled:hover:bg-gray-500"
           onClick={start}
         >
           Start
         </button>
         <button
-          disabled={state === "completing"}
+          // disabled={state === "completing"}
           className="transition disabled:opacity-50 bg-gray-600 text-sm font-semibold rounded px-3 py-1.5 enabled:hover:bg-gray-500"
           onClick={finish}
         >
@@ -122,7 +122,7 @@ function GlobalProgress({
       {state !== "complete" && (
         <motion.div
           style={{ width }}
-          exit={{ opacity: 0, transition: { delay: 0.1, duration: 0.2 } }}
+          exit={{ opacity: 0, transition: { delay: 0.1, duration: 10 } }}
           className="fixed h-2 shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
         />
 
