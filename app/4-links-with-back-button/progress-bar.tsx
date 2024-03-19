@@ -36,7 +36,7 @@ export function ProgressBarRoot({ children }: { children: ReactNode }) {
     <ProgressBarContext.Provider value={progress}>
       <GlobalProgressForBrowserNavigation />
 
-      <AnimatePresence onExitComplete={progress.restart}>
+      <AnimatePresence onExitComplete={progress.reset}>
         {progress.state !== "complete" && (
           <motion.div
             style={{ width }}
@@ -45,6 +45,7 @@ export function ProgressBarRoot({ children }: { children: ReactNode }) {
           />
         )}
       </AnimatePresence>
+
       {children}
     </ProgressBarContext.Provider>
   );
@@ -55,24 +56,18 @@ function GlobalProgressForBrowserNavigation() {
   let pathname = usePathname();
   let [newPathname, setNewPathname] = useState<string>();
   let [didPopState, setDidPopState] = useState(false);
-  let popStateIsPending = didPopState && newPathname !== pathname;
 
   useEffect(() => {
-    startTransition(() => {
-      if (didPopState) {
-        if (newPathname !== pathname) {
-          progress.start();
-        } else {
-          progress.finish();
-          setDidPopState(false);
-        }
-      }
-    });
-  }, [didPopState, newPathname, pathname, popStateIsPending, progress]);
+    if (didPopState && newPathname === pathname) {
+      progress.done();
+      setDidPopState(false);
+    }
+  }, [didPopState, newPathname, pathname, progress]);
 
   useEffect(() => {
     function handlePopState() {
       startTransition(() => {
+        progress.start();
         setDidPopState(true);
         setNewPathname(window.location.pathname);
       });
@@ -83,7 +78,7 @@ function GlobalProgressForBrowserNavigation() {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [progress]);
 
   return null;
 }

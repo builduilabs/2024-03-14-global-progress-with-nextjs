@@ -22,8 +22,8 @@ export default function AppLink({
         progress.start();
 
         startTransition(() => {
+          progress.done();
           router.push(href);
-          progress.finish();
         });
       }}
       href={href}

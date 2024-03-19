@@ -54,9 +54,9 @@ export default function useProgress() {
   }
 
   function done() {
-    if (state === "initial" || state === "in-progress") {
-      setState("completing");
-    }
+    setState((state) =>
+      state === "initial" || state === "in-progress" ? "completing" : state
+    );
   }
 
   return { state, progress, start, done, reset };
