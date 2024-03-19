@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import AppLink from "./app-link";
-import GlobalProgress from "./global-progress";
+import GlobalProgress from "./progress-bar-provider";
 
 export default function Page({ children }: { children: ReactNode }) {
   return (

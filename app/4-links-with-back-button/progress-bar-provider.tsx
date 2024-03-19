@@ -12,12 +12,12 @@ import {
 } from "react";
 import useProgress from "../use-progress";
 
-export const GlobalProgressContext = createContext<ReturnType<
+export const ProgressBarContext = createContext<ReturnType<
   typeof useProgress
 > | null>(null);
 
-export function useGlobalProgress() {
-  let progress = useContext(GlobalProgressContext);
+export function useProgressBar() {
+  let progress = useContext(ProgressBarContext);
 
   if (progress === null) {
     throw new Error("Need to be inside provider");
@@ -31,8 +31,8 @@ export default function GlobalProgress({ children }: { children: ReactNode }) {
   let width = useMotionTemplate`${progress.progress}%`;
 
   return (
-    <GlobalProgressContext.Provider value={progress}>
-      <GlobalProgressForBrowserNavigation />
+    <ProgressBarContext.Provider value={progress}>
+      {/* <GlobalProgressForBrowserNavigation /> */}
 
       <AnimatePresence onExitComplete={progress.restart}>
         {progress.state !== "complete" && (
@@ -44,12 +44,12 @@ export default function GlobalProgress({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
       {children}
-    </GlobalProgressContext.Provider>
+    </ProgressBarContext.Provider>
   );
 }
 
 function GlobalProgressForBrowserNavigation() {
-  let progress = useGlobalProgress();
+  let progress = useProgressBar();
   let pathname = usePathname();
   let [newPathname, setNewPathname] = useState<string>();
   let [didPopState, setDidPopState] = useState(false);

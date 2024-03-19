@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState, useTransition } from "react";
-import { useGlobalProgress } from "./global-progress";
+import { useProgressBar } from "./progress-bar-provider";
 
 export default function AppLink({
   href,
@@ -14,8 +13,7 @@ export default function AppLink({
 }) {
   let [didClick, setDidClick] = useState(false);
   let [isPending, startTransition] = useTransition();
-  let progress = useGlobalProgress();
-  let router = useRouter();
+  let progress = useProgressBar();
 
   useEffect(() => {
     if (!isPending && didClick) {
@@ -28,10 +26,9 @@ export default function AppLink({
     <Link
       onClick={() => {
         progress.start();
-        setDidClick(true);
 
         startTransition(() => {
-          router.push(href);
+          setDidClick(true);
         });
       }}
       href={href}
