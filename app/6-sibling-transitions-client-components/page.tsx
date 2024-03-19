@@ -5,7 +5,7 @@ import ClientB from "./client-b";
 export default function Page() {
   return (
     <div className="max-w-3xl mx-auto">
-      <p>I'm the page</p>
+      <p>Im the page</p>
 
       <div className="grid grid-cols-2 gap-4 mt-4">
         <Suspense fallback={<p>Loading A..</p>}>

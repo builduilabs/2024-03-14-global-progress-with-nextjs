@@ -32,7 +32,7 @@ export default function GlobalProgress({ children }: { children: ReactNode }) {
 
   return (
     <ProgressBarContext.Provider value={progress}>
-      {/* <GlobalProgressForBrowserNavigation /> */}
+      <GlobalProgressForBrowserNavigation />
 
       <AnimatePresence onExitComplete={progress.restart}>
         {progress.state !== "complete" && (
