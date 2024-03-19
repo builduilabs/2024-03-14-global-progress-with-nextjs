@@ -12,15 +12,10 @@ function reducer(
 ) {
   switch (action.type) {
     case "START": {
-      return state.current === "complete"
-        ? {
-            previous: state.current,
-            current: "resetting",
-          }
-        : {
-            previous: state.current,
-            current: "in-progress",
-          };
+      return {
+        previous: state.current,
+        current: "in-progress",
+      };
     }
     case "FINISH": {
       return {
@@ -52,17 +47,16 @@ export default function useProgress() {
     previous: "null",
   });
 
-  // let [state, setState] = useState<
-  //   "initial" | "in-progress" | "completing" | "complete" | "resetting"
-  // >("initial");
-  // // let progress = useMo
   let progress = useSpring(0, { bounce: 0, duration: 350 });
-  let [intervalShouldRun, setIntervalShouldRun] = useState(false);
 
   useInterval(
     () => {
       let diff;
-      console.log({ progress: progress.get() });
+
+      // If we start progress but the bar is currently complete, reset it first.
+      if (progress.get() === 100) {
+        progress.jump(0);
+      }
 
       if (progress.get() === 0) {
         diff = rand(15, 20);
@@ -72,75 +66,35 @@ export default function useProgress() {
         diff = rand(1, 5);
       }
 
-      console.log("animating progress");
       progress.set(Math.min(progress.get() + diff, 99));
     },
-    // intervalShouldRun ? 750 : null
     state.current === "in-progress" ? 750 : null
   );
 
   useEffect(() => {
-    if (state.current === "initial" && state.previous !== "initial") {
-      progress.jump(0);
-    } else if (state.current === "in-progress") {
-      // setIntervalShouldRun(true);
-      // startInterval()
-      // progress.set(25);
-    } else if (state.current === "resetting") {
+    if (state.current === "initial") {
       progress.jump(0);
     } else if (state.current === "completing") {
       progress.set(100);
     }
-    // if (state === "resetting") {
-    //   progress.jump(0);
-    //   setState("in-progress");
-    // } else if (state === "in-progress") {
-    //   progress.set(25);
-    // } else if (state === "completing") {
-    //   progress.set(100);
-    // }
+
+    return progress.on("change", (value) => {
+      if (value === 100) {
+        dispatch({ type: "FINISHED" });
+      }
+    });
   }, [progress, state]);
 
-  // (prevState, action) => state
-  // ({ previous: 'xxx', current: 'complete'}, 'start') => { current: 'in-progress', previous: 'complete' }
-  // ({ previous: 'xxx', current: 'any-other'}, 'start') => { current: 'in-progress', previous: 'any-other' }
-
-  // ({ before: 'xxx', current: 'complete'}, 'restart') => { current: 'in-progress' }
-
-  useMotionValueEvent(progress, "change", (v) => {
-    if (v === 100) {
-      dispatch({ type: "FINISHED" });
-    } else if (v === 0 && state.current === "resetting") {
-      dispatch({ type: "START" });
-    }
-  });
-
   function restart() {
-    //   progress.jump(0);
-    //   setState("initial");
     dispatch({ type: "RESET" });
   }
 
   function start() {
-    // if (state === "complete") {
-    //   setState("resetting");
-    // } else {
-    //   setState("in-progress");
-    // }
-    // if (state === "complete") {
-    //   progress.jump(0);
-    // }
     dispatch({ type: "START" });
   }
 
   function finish() {
     dispatch({ type: "FINISH" });
-
-    //   // if (state === "complete") {
-    //   //   progress.jump(0);
-    //   // }
-    //   // progress.set(100);
-    //   setState("completing");
   }
 
   return { state: state.current, progress, start, finish, restart };
