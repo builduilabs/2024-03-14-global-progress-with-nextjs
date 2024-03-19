@@ -13,23 +13,23 @@ import useProgress from "./use-progress";
 export default function Page() {
   let [isShowingInfo, setIsShowingInfo] = useState(false);
 
-  let { state, progress, start, finish, restart } = useProgress();
+  let { state, progress, start, done, reset } = useProgress();
 
   let progressLog = useTransform(progress, (v) => Math.floor(v));
 
   return (
     <div className="h-screen relative flex flex-col">
-      <GlobalProgress state={state} progress={progress} restart={restart} />
+      <GlobalProgress state={state} progress={progress} reset={reset} />
 
-      {/* <Spinner state={state} progress={progress} restart={restart} /> */}
+      {/* <Spinner state={state} progress={progress} reset={reset} /> */}
 
       <div className="mx-4 my-8 flex grow items-center justify-center gap-4">
         <button
           // disabled={state === "initial"}
           className="transition bg-gray-600 text-sm font-semibold rounded px-3 py-1.5 enabled:hover:bg-gray-500 disabled:opacity-50"
-          onClick={restart}
+          onClick={reset}
         >
-          Restart
+          Reset
         </button>
         <button
           // disabled={state === "in-progress"}
@@ -41,9 +41,9 @@ export default function Page() {
         <button
           // disabled={state === "completing"}
           className="transition disabled:opacity-50 bg-gray-600 text-sm font-semibold rounded px-3 py-1.5 enabled:hover:bg-gray-500"
-          onClick={finish}
+          onClick={done}
         >
-          Finish
+          Done
         </button>
       </div>
 
@@ -113,12 +113,12 @@ export default function Page() {
 function GlobalProgress({
   state,
   progress,
-  restart,
-}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "restart">) {
+  reset,
+}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "reset">) {
   let width = useMotionTemplate`${progress}%`;
 
   return (
-    <AnimatePresence onExitComplete={restart}>
+    <AnimatePresence onExitComplete={reset}>
       {state !== "complete" && (
         <motion.div
           style={{ width }}
@@ -155,12 +155,12 @@ function GlobalProgress({
 function Spinner({
   state,
   progress,
-  restart,
-}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "restart">) {
+  reset,
+}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "reset">) {
   let pathLength = useTransform(progress, (v) => v / 100);
 
   return (
-    <AnimatePresence onExitComplete={restart}>
+    <AnimatePresence onExitComplete={reset}>
       {state !== "complete" && (
         <motion.div
           className="w-full flex justify-center items-center"
