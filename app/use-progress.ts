@@ -1,4 +1,4 @@
-import { animate, useMotionValue, useSpring } from "framer-motion";
+import { useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import useInterval from "./use-interval";
 
