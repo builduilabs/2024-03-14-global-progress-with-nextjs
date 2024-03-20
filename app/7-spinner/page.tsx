@@ -4,10 +4,10 @@ import { InformationCircleIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import {
   AnimatePresence,
   motion,
-  useMotionTemplate,
+  useMotionValueEvent,
   useTransform,
 } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useProgress from "../use-progress";
 
 export default function Page() {
@@ -19,7 +19,7 @@ export default function Page() {
 
   return (
     <div className="h-screen relative flex flex-col">
-      <Spinner state={state} progress={progress} reset={reset} />
+      <Spinner progress={progress} />
 
       <div className="mx-4 my-8 flex grow items-center justify-center gap-4">
         <button
@@ -108,79 +108,43 @@ export default function Page() {
   );
 }
 
-function GlobalProgress({
-  state,
-  progress,
-  reset,
-}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "reset">) {
-  let width = useMotionTemplate`${progress}%`;
-
-  return (
-    <AnimatePresence onExitComplete={reset}>
-      {state !== "complete" && (
-        <motion.div
-          style={{ width }}
-          exit={{ opacity: 0, transition: { duration: 0.4, ease: "circIn" } }}
-          className="fixed h-[3px] shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
-        />
-
-        // <motion.div
-        //   className="w-full flex justify-center items-center"
-        //   key="foo"
-        //   exit={{ opacity: 0 }}
-        // >
-        //   <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
-        //     <motion.circle
-        //       style={{ pathLength }}
-        //       cx="60"
-        //       cy="60"
-        //       r="50"
-        //       stroke="currentColor"
-        //       className={`text-sky-500 ${
-        //         state === "initial" ? "opacity-0" : ""
-        //       }`}
-        //       strokeWidth={6}
-        //       fill="none"
-        //       strokeLinecap="round"
-        //     />
-        //   </svg>
-        // </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
 function Spinner({
-  state,
   progress,
-  reset,
-}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "reset">) {
+}: Pick<ReturnType<typeof useProgress>, "progress">) {
   let pathLength = useTransform(progress, (v) => v / 100);
   let opacity = useTransform(pathLength, [0, 0.01, 0.02, 1], [0, 0, 1, 1]);
 
   return (
-    <AnimatePresence onExitComplete={reset}>
-      {state !== "complete" && (
-        <motion.div
-          className="w-full flex justify-center items-center"
-          key="foo"
-          exit={{ opacity: 0 }}
-        >
-          <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
-            <motion.circle
-              style={{ pathLength, opacity }}
-              cx="60"
-              cy="60"
-              r="50"
-              stroke="currentColor"
-              className="text-sky-500"
-              strokeWidth={6}
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className="w-full flex justify-center relative items-center">
+      <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
+        <motion.circle
+          cx="60"
+          cy="60"
+          r="50"
+          stroke="currentColor"
+          className="text-gray-700"
+          strokeWidth={6}
+          fill="none"
+          strokeLinecap="round"
+        />
+        <motion.circle
+          style={{ pathLength, opacity }}
+          cx="60"
+          cy="60"
+          r="50"
+          stroke="currentColor"
+          className="text-sky-500"
+          strokeWidth={6}
+          fill="none"
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="absolute tabular-nums text-white text-sm">
+        <motion.span>
+          {useTransform(progress, (v) => Math.floor(v))}
+        </motion.span>
+        %
+      </span>
+    </div>
   );
 }
