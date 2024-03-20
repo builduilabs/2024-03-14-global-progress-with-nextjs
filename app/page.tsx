@@ -21,8 +21,6 @@ export default function Page() {
     <div className="h-screen relative flex flex-col">
       <GlobalProgress state={state} progress={progress} reset={reset} />
 
-      {/* <Spinner state={state} progress={progress} reset={reset} /> */}
-
       <div className="mx-4 my-8 flex grow items-center justify-center gap-4">
         <button
           // disabled={state === "initial"}
@@ -125,64 +123,6 @@ function GlobalProgress({
           exit={{ opacity: 0, transition: { duration: 0.4, ease: "circIn" } }}
           className="fixed h-[3px] shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
         />
-
-        // <motion.div
-        //   className="w-full flex justify-center items-center"
-        //   key="foo"
-        //   exit={{ opacity: 0 }}
-        // >
-        //   <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
-        //     <motion.circle
-        //       style={{ pathLength }}
-        //       cx="60"
-        //       cy="60"
-        //       r="50"
-        //       stroke="currentColor"
-        //       className={`text-sky-500 ${
-        //         state === "initial" ? "opacity-0" : ""
-        //       }`}
-        //       strokeWidth={6}
-        //       fill="none"
-        //       strokeLinecap="round"
-        //     />
-        //   </svg>
-        // </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function Spinner({
-  state,
-  progress,
-  reset,
-}: Pick<ReturnType<typeof useProgress>, "state" | "progress" | "reset">) {
-  let pathLength = useTransform(progress, (v) => v / 100);
-
-  return (
-    <AnimatePresence onExitComplete={reset}>
-      {state !== "complete" && (
-        <motion.div
-          className="w-full flex justify-center items-center"
-          key="foo"
-          exit={{ opacity: 0 }}
-        >
-          <svg viewBox="0 0 120 120" className="size-32 p-2 -rotate-90">
-            <motion.circle
-              style={{ pathLength }}
-              cx="60"
-              cy="60"
-              r="50"
-              stroke="currentColor"
-              className={`text-sky-500 ${
-                state === "initial" ? "opacity-0" : ""
-              }`}
-              strokeWidth={6}
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
-        </motion.div>
       )}
     </AnimatePresence>
   );
