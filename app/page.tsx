@@ -122,7 +122,7 @@ function GlobalProgress({
       {state !== "complete" && (
         <motion.div
           style={{ width }}
-          exit={{ opacity: 0, transition: { delay: 0.1, duration: 10 } }}
+          exit={{ opacity: 0 }}
           className="fixed h-2 shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
         />
 
