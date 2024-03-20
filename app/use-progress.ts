@@ -16,23 +16,23 @@ export default function useProgress() {
 
   useInterval(
     () => {
-      let diff;
+      let current = progress.get();
 
       // If we start progress but the bar is currently complete, reset it first.
-      if (progress.get() === 100) {
+      if (current === 100) {
         progress.jump(0);
       }
 
-      if (progress.get() === 0) {
-        diff = rand(15, 20);
-      } else if (progress.get() < 50) {
-        diff = rand(5, 10);
+      let diff;
+      if (current === 0) {
+        diff = 15;
+      } else if (current < 50) {
+        diff = rand(1, 10);
       } else {
         diff = rand(1, 5);
       }
 
-      let newProgress = Math.min(progress.get() + diff, 99);
-      progress.set(newProgress);
+      progress.set(Math.min(current + diff, 99));
     },
     state === "in-progress" ? 750 : null
   );
@@ -70,4 +70,10 @@ export default function useProgress() {
 
 function rand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function clamp(n: number, min: number, max: number) {
+  if (n < min) return min;
+  if (n > max) return max;
+  return n;
 }
