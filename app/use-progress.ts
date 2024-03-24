@@ -71,9 +71,3 @@ export default function useProgress() {
 function rand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-function clamp(n: number, min: number, max: number) {
-  if (n < min) return min;
-  if (n > max) return max;
-  return n;
-}

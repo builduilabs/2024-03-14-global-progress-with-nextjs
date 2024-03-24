@@ -16,8 +16,6 @@ export const ProgressBarContext = createContext<ReturnType<
   typeof useProgress
 > | null>(null);
 
-// store
-
 export function useProgressBar() {
   let progress = useContext(ProgressBarContext);
 
@@ -41,7 +39,7 @@ export function ProgressBarRoot({ children }: { children: ReactNode }) {
           <motion.div
             style={{ width }}
             exit={{ opacity: 0 }}
-            className="fixed h-1 shadow-lg shadow-sky-500/20 bg-sky-500 top-0"
+            className="fixed h-1 shadow-lg shadow-sky-500/20 bg-sky-500 top-12"
           />
         )}
       </AnimatePresence>
