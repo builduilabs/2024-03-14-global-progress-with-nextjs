@@ -16,12 +16,12 @@ export default function useProgress() {
 
   useInterval(
     () => {
-      let current = progress.get();
-
       // If we start progress but the bar is currently complete, reset it first.
-      if (current === 100) {
+      if (progress.get() === 100) {
         progress.jump(0);
       }
+
+      let current = progress.get();
 
       let diff;
       if (current === 0) {

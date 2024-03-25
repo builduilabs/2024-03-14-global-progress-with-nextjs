@@ -9,10 +9,10 @@ import {
   useTransform,
 } from "framer-motion";
 import { useState } from "react";
-import useProgress from "./use-progress";
+import useProgress from "../use-progress";
 
 export default function Page() {
-  let [isShowingInfo, setIsShowingInfo] = useState(false);
+  let [isShowingInfo, setIsShowingInfo] = useState(true);
   let { state, progress, start, done, reset } = useProgress();
 
   return (
@@ -91,7 +91,7 @@ function InfoBar({
   let progressLog = useTransform(progress, (v) => Math.floor(v));
 
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       {open && (
         <motion.div
           initial={{ y: "100%" }}
