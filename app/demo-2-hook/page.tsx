@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <div className="h-screen relative flex flex-col">
-      <div className="h-full mx-4 flex items-center justify-center gap-4">
+      <div className="h-2/3 mx-4 flex items-center justify-center gap-4">
         <button
           className="transition bg-gray-600 text-sm font-semibold rounded px-3 py-1.5 hover:bg-gray-500"
           onClick={reset}

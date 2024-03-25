@@ -66,10 +66,7 @@ function Spinner({ progress }: { progress: MotionValue }) {
         />
       </svg>
       <span className="absolute tabular-nums font-medium text-sm">
-        <motion.span>
-          {useTransform(progress, (v) => Math.floor(v))}
-        </motion.span>
-        %
+        <motion.span>{useTransform(progress, Math.floor)}</motion.span>%
       </span>
     </div>
   );
