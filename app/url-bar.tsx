@@ -6,9 +6,17 @@ import {
   ArrowRightIcon,
 } from "@heroicons/react/16/solid";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 export default function URLBar() {
+  return (
+    <Suspense>
+      <URLBarInner />
+    </Suspense>
+  );
+}
+
+function URLBarInner() {
   let router = useRouter();
   let pathname = usePathname();
   let searchParams = useSearchParams();
