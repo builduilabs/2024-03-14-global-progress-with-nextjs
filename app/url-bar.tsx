@@ -9,21 +9,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 export default function URLBar() {
-  return (
-    <Suspense>
-      <URLBarInner />
-    </Suspense>
-  );
-}
-
-function URLBarInner() {
   let router = useRouter();
-  let pathname = usePathname();
-  let searchParams = useSearchParams();
   let [isReloading, setIsReloading] = useState(false);
-
-  let url = new URL(pathname, "http://foo.com");
-  url.search = searchParams.toString();
 
   return (
     <>
@@ -60,10 +47,23 @@ function URLBarInner() {
           </button>
         </div>
         <span className="bg-gray-800/50 rounded-full truncate grow px-3 mr-3 py-1.5 text-gray-400 font-medium text-sm">
-          {pathname}
-          {url.search}
+          <FullURL />
         </span>
       </div>
     </>
+  );
+}
+
+function FullURL() {
+  let pathname = usePathname();
+  let searchParams = useSearchParams();
+  let url = new URL(pathname, "http://foo.com");
+  url.search = searchParams.toString();
+
+  return (
+    <Suspense>
+      {pathname}
+      {url.search}
+    </Suspense>
   );
 }

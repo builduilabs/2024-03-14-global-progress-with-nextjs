@@ -4,7 +4,6 @@ export default function useInterval(
   callback: () => void,
   delay: number | null
 ) {
-  const intervalRef = useRef<number>();
   const savedCallback = useRef(callback);
 
   useEffect(() => {
@@ -12,15 +11,15 @@ export default function useInterval(
   }, [callback]);
 
   useEffect(() => {
-    const tick = () => savedCallback.current();
+    function tick() {
+      savedCallback.current();
+    }
 
-    if (typeof delay === "number") {
+    if (delay !== null) {
       tick();
-      intervalRef.current = window.setInterval(tick, delay);
 
-      return () => window.clearInterval(intervalRef.current);
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
     }
   }, [delay]);
-
-  return intervalRef;
 }
