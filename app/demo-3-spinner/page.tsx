@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useTransform } from "framer-motion";
+import { MotionValue, motion, useTransform } from "framer-motion";
 import useProgress from "../use-progress";
 
 export default function Page() {
@@ -36,9 +36,7 @@ export default function Page() {
   );
 }
 
-function Spinner({
-  progress,
-}: Pick<ReturnType<typeof useProgress>, "progress">) {
+function Spinner({ progress }: { progress: MotionValue }) {
   let pathLength = useTransform(progress, (v) => v / 100);
   let opacity = useTransform(pathLength, [0, 0.01, 0.02, 1], [0, 0, 1, 1]);
 
