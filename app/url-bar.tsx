@@ -47,7 +47,9 @@ export default function URLBar() {
           </button>
         </div>
         <span className="bg-gray-800/50 rounded-full truncate grow px-3 mr-3 py-1.5 text-gray-400 font-medium text-sm">
-          <FullURL />
+          <Suspense>
+            <FullURL />
+          </Suspense>
         </span>
       </div>
     </>
@@ -60,10 +62,5 @@ function FullURL() {
   let url = new URL(pathname, "http://foo.com");
   url.search = searchParams.toString();
 
-  return (
-    <Suspense>
-      {pathname}
-      {url.search}
-    </Suspense>
-  );
+  return pathname + url.search;
 }
