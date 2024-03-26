@@ -12,7 +12,7 @@ export function useProgressBar() {
   let progress = useContext(ProgressBarContext);
 
   if (progress === null) {
-    throw new Error("Can only be used within <ProgressBar>");
+    throw new Error("Need to be inside provider");
   }
 
   return progress;

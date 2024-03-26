@@ -2,23 +2,26 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import ProgressBarLink from "./progress-bar-link";
+import { ProgressBar } from "./progress-bar";
 import { Suspense } from "react";
 
 export default function Messenger() {
   return (
     <Suspense>
-      <div className="fixed bottom-0 right-3 w-60 rounded-t-xl shadow-md pb-2 shadow-black/75 bg-gray-700">
-        <p className="font-semibold border-b border-gray-600 py-2 px-4 text-lg">
-          Messages
-        </p>
-        <div className="mt-3">
-          {[
-            { name: "Sam", id: "sam" },
-            { name: "Ryan", id: "ryan" },
-          ].map((user) => (
-            <MessengerLink user={user} key={user.id} />
-          ))}
-        </div>
+      <div className="overflow-hidden fixed bottom-0 right-3 w-60 rounded-t-xl shadow-md pb-2 shadow-black/75 bg-gray-700">
+        <ProgressBar>
+          <p className="font-semibold border-b border-gray-600 py-2 px-4 text-lg">
+            Messages
+          </p>
+          <div className="mt-2">
+            {[
+              { name: "Sam", id: "sam" },
+              { name: "Ryan", id: "ryan" },
+            ].map((user) => (
+              <MessengerLink user={user} key={user.id} />
+            ))}
+          </div>
+        </ProgressBar>
       </div>
     </Suspense>
   );
