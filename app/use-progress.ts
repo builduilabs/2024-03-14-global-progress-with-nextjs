@@ -7,7 +7,7 @@ export default function useProgress() {
     "initial" | "in-progress" | "completing" | "complete"
   >("initial");
 
-  let progress = useSpring(0, {
+  let value = useSpring(0, {
     damping: 25,
     mass: 0.5,
     stiffness: 300,
@@ -17,11 +17,11 @@ export default function useProgress() {
   useInterval(
     () => {
       // If we start progress but the bar is currently complete, reset it first.
-      if (progress.get() === 100) {
-        progress.jump(0);
+      if (value.get() === 100) {
+        value.jump(0);
       }
 
-      let current = progress.get();
+      let current = value.get();
 
       let diff;
       if (current === 0) {
@@ -32,24 +32,24 @@ export default function useProgress() {
         diff = rand(1, 5);
       }
 
-      progress.set(Math.min(current + diff, 99));
+      value.set(Math.min(current + diff, 99));
     },
     state === "in-progress" ? 750 : null
   );
 
   useEffect(() => {
     if (state === "initial") {
-      progress.jump(0);
+      value.jump(0);
     } else if (state === "completing") {
-      progress.set(100);
+      value.set(100);
     }
 
-    return progress.on("change", (value) => {
-      if (value === 100) {
+    return value.on("change", (latest) => {
+      if (latest === 100) {
         setState("complete");
       }
     });
-  }, [progress, state]);
+  }, [value, state]);
 
   function reset() {
     setState("initial");
@@ -65,7 +65,7 @@ export default function useProgress() {
     );
   }
 
-  return { state, progress, start, done, reset };
+  return { state, value, start, done, reset };
 }
 
 function rand(min: number, max: number) {

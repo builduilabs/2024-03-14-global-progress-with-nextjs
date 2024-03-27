@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
 import URLBar from "../url-bar";
-import AppLink from "./app-link";
-import { ProgressBarRoot } from "./progress-bar";
+import { ProgressBarLink, ProgressBarRoot } from "./progress-bar";
 
-export default function Page({ children }: { children: ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
       <URLBar />
@@ -11,10 +10,10 @@ export default function Page({ children }: { children: ReactNode }) {
       <ProgressBarRoot>
         <header className="border-b border-gray-700">
           <nav className="m-4 flex gap-4">
-            <AppLink href="/demo-1">Home</AppLink>
-            <AppLink href="/demo-1/posts/1">Post 1</AppLink>
-            <AppLink href="/demo-1/posts/2">Post 2</AppLink>
-            <AppLink href="/demo-1/posts/3">Post 3</AppLink>
+            <ProgressBarLink href="/demo-1">Home</ProgressBarLink>
+            <ProgressBarLink href="/demo-1/posts/1">Post 1</ProgressBarLink>
+            <ProgressBarLink href="/demo-1/posts/2">Post 2</ProgressBarLink>
+            <ProgressBarLink href="/demo-1/posts/3">Post 3</ProgressBarLink>
           </nav>
         </header>
 
