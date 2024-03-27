@@ -9,7 +9,7 @@ import {
 import useProgress from "../use-progress";
 
 export default function Page() {
-  let { progress, state, start, done, reset } = useProgress();
+  let { value, state, start, done, reset } = useProgress();
 
   return (
     <div className="h-screen relative flex flex-col">
@@ -17,7 +17,7 @@ export default function Page() {
         <AnimatePresence onExitComplete={reset}>
           {state !== "complete" && (
             <motion.div exit={{ opacity: 0 }} className="w-full">
-              <ProgressBar progress={progress} />
+              <ProgressBar progress={value} />
             </motion.div>
           )}
         </AnimatePresence>

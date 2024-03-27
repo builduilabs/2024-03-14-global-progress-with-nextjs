@@ -4,12 +4,12 @@ import { MotionValue, motion, useMotionTemplate } from "framer-motion";
 import useProgress from "../use-progress";
 
 export default function Page() {
-  let { progress, start, done, reset } = useProgress();
+  let { value, start, done, reset } = useProgress();
 
   return (
     <div className="h-screen relative flex flex-col">
       <div className="grow flex justify-center items-center">
-        <ProgressBar progress={progress} />
+        <ProgressBar progress={value} />
       </div>
 
       <div className="h-1/3 flex items-center justify-center gap-4">
