@@ -20,7 +20,7 @@ export function useProgressBar() {
 
 export function ProgressBar({ children }: { children: ReactNode }) {
   let progress = useProgress();
-  let width = useMotionTemplate`${progress.progress}%`;
+  let width = useMotionTemplate`${progress.value}%`;
 
   return (
     <ProgressBarContext.Provider value={progress}>

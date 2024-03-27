@@ -12,10 +12,16 @@ export default function Layout({ children }: { children: ReactNode }) {
       <div className="relative">
         <ProgressBar>
           <nav className="p-4 border-b border-gray-700 flex gap-6">
-            <ProgressLink href="/demo-9-messenger">Home</ProgressLink>
-            <ProgressLink href="/demo-9-messenger/1">Page 1</ProgressLink>
-            <ProgressLink href="/demo-9-messenger/2">Page 2</ProgressLink>
-            <ProgressLink href="/demo-9-messenger/3">Page 3</ProgressLink>
+            <ProgressLink href="/demo-11-messenger-isolated">Home</ProgressLink>
+            <ProgressLink href="/demo-11-messenger-isolated/1">
+              Page 1
+            </ProgressLink>
+            <ProgressLink href="/demo-11-messenger-isolated/2">
+              Page 2
+            </ProgressLink>
+            <ProgressLink href="/demo-11-messenger-isolated/3">
+              Page 3
+            </ProgressLink>
           </nav>
 
           <div className="m-4">{children}</div>

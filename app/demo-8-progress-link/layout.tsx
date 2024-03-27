@@ -12,7 +12,7 @@ import { ReactNode } from "react";
 import URLBar from "../url-bar";
 
 export default function Layout({ children }: { children: ReactNode }) {
-  let { progress, state, start, done, reset } = useProgress();
+  let { value, state, start, done, reset } = useProgress();
 
   return (
     <div className="relative flex flex-col">
@@ -22,23 +22,23 @@ export default function Layout({ children }: { children: ReactNode }) {
         <AnimatePresence onExitComplete={reset}>
           {state !== "complete" && (
             <motion.div exit={{ opacity: 0 }} className="w-full">
-              <ProgressBar progress={progress} />
+              <ProgressBar progress={value} />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       <nav className="p-4 border-b border-gray-700 flex gap-6">
-        <ProgressLink start={start} done={done} href="/demo-7-progress-link">
+        <ProgressLink start={start} done={done} href="/demo-8-progress-link">
           Home
         </ProgressLink>
-        <ProgressLink start={start} done={done} href="/demo-7-progress-link/1">
+        <ProgressLink start={start} done={done} href="/demo-8-progress-link/1">
           Page 1
         </ProgressLink>
-        <ProgressLink start={start} done={done} href="/demo-7-progress-link/2">
+        <ProgressLink start={start} done={done} href="/demo-8-progress-link/2">
           Page 2
         </ProgressLink>
-        <ProgressLink start={start} done={done} href="/demo-7-progress-link/3">
+        <ProgressLink start={start} done={done} href="/demo-8-progress-link/3">
           Page 3
         </ProgressLink>
       </nav>

@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 import URLBar from "../url-bar";
 import { ProgressBar } from "./progress-bar";
-import ProgressLink from "./progress-bar-link";
-import Messenger from "./messenger";
+import ProgressBarLink from "./progress-bar-link";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -12,21 +11,20 @@ export default function Layout({ children }: { children: ReactNode }) {
       <div className="relative">
         <ProgressBar>
           <nav className="p-4 border-b border-gray-700 flex gap-6">
-            <ProgressLink href="/demo-10-messenger-isolated">Home</ProgressLink>
-            <ProgressLink href="/demo-10-messenger-isolated/1">
+            <ProgressBarLink href="/demo-9-global-progress-link">
+              Home
+            </ProgressBarLink>
+            <ProgressBarLink href="/demo-9-global-progress-link/1">
               Page 1
-            </ProgressLink>
-            <ProgressLink href="/demo-10-messenger-isolated/2">
+            </ProgressBarLink>
+            <ProgressBarLink href="/demo-9-global-progress-link/2">
               Page 2
-            </ProgressLink>
-            <ProgressLink href="/demo-10-messenger-isolated/3">
+            </ProgressBarLink>
+            <ProgressBarLink href="/demo-9-global-progress-link/3">
               Page 3
-            </ProgressLink>
+            </ProgressBarLink>
           </nav>
-
           <div className="m-4">{children}</div>
-
-          <Messenger />
         </ProgressBar>
       </div>
     </div>
