@@ -29,16 +29,16 @@ export default function Layout({ children }: { children: ReactNode }) {
       </div>
 
       <nav className="p-4 border-b border-gray-700 flex gap-6">
-        <ProgressLink start={start} done={done} href="/demo-8-progress-link">
+        <ProgressLink start={start} done={done} href="/demo-10-progress-link">
           Home
         </ProgressLink>
-        <ProgressLink start={start} done={done} href="/demo-8-progress-link/1">
+        <ProgressLink start={start} done={done} href="/demo-10-progress-link/1">
           Page 1
         </ProgressLink>
-        <ProgressLink start={start} done={done} href="/demo-8-progress-link/2">
+        <ProgressLink start={start} done={done} href="/demo-10-progress-link/2">
           Page 2
         </ProgressLink>
-        <ProgressLink start={start} done={done} href="/demo-8-progress-link/3">
+        <ProgressLink start={start} done={done} href="/demo-10-progress-link/3">
           Page 3
         </ProgressLink>
       </nav>
