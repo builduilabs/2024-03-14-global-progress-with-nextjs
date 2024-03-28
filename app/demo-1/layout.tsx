@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div>
       <URLBar />
 
-      <ProgressBar>
+      <ProgressBar className="fixed h-1 shadow-lg shadow-sky-500/20 bg-sky-500 top-12">
         <header className="border-b border-gray-700">
           <nav className="m-4 flex gap-4">
             <ProgressBarLink href="/demo-1">Home</ProgressBarLink>

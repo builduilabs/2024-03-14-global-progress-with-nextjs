@@ -34,7 +34,13 @@ export function useProgressBar() {
   return progress;
 }
 
-export function ProgressBar({ children }: { children: ReactNode }) {
+export function ProgressBar({
+  className,
+  children,
+}: {
+  className: string;
+  children: ReactNode;
+}) {
   let progress = useProgress();
   let width = useMotionTemplate`${progress.value}%`;
 
@@ -47,7 +53,7 @@ export function ProgressBar({ children }: { children: ReactNode }) {
           <motion.div
             style={{ width }}
             exit={{ opacity: 0 }}
-            className="fixed h-1 shadow-lg shadow-sky-500/20 bg-sky-500 top-12"
+            className={className}
           />
         )}
       </AnimatePresence>
