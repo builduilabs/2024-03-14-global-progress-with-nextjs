@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import URLBar from "../url-bar";
-import { ProgressBarLink, ProgressBarRoot } from "./progress-bar";
+import { ProgressBar, ProgressBarLink } from "./progress-bar";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
       <URLBar />
 
-      <ProgressBarRoot>
+      <ProgressBar>
         <header className="border-b border-gray-700">
           <nav className="m-4 flex gap-4">
             <ProgressBarLink href="/demo-1">Home</ProgressBarLink>
@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </header>
 
         <div className="m-4">{children}</div>
-      </ProgressBarRoot>
+      </ProgressBar>
     </div>
   );
 }

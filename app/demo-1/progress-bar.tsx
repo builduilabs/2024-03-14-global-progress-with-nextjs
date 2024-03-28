@@ -34,7 +34,7 @@ export function useProgressBar() {
   return progress;
 }
 
-export function ProgressBarRoot({ children }: { children: ReactNode }) {
+export function ProgressBar({ children }: { children: ReactNode }) {
   let progress = useProgress();
   let width = useMotionTemplate`${progress.value}%`;
 
