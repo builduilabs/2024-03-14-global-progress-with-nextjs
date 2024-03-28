@@ -51,8 +51,7 @@ function ProgressBar({ progress }: { progress: MotionValue }) {
   let width = useMotionTemplate`${progress}%`;
 
   return (
-    <div className="mx-auto max-w-md relative w-full h-2 rounded overflow-hidden">
-      {/* <div className="absolute top-0 bg-gray-700 inset-0"></div> */}
+    <div className="mx-auto max-w-xs sm:max-w-md relative w-full h-2 rounded overflow-hidden">
       <motion.div
         style={{ width }}
         className="absolute inset-y-0 shadow-lg shadow-sky-500/20 bg-sky-500"

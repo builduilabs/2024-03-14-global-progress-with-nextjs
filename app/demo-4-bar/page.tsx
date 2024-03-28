@@ -40,7 +40,7 @@ function ProgressBar({ progress }: { progress: MotionValue }) {
   let width = useMotionTemplate`${progress}%`;
 
   return (
-    <div className="max-w-md relative w-full h-2 rounded overflow-hidden">
+    <div className="max-w-xs sm:max-w-md relative w-full h-2 rounded overflow-hidden">
       <div className="absolute top-0 bg-gray-700 inset-0"></div>
       <motion.div
         style={{ width }}

@@ -29,8 +29,8 @@ export default function Page() {
         </button>
       </div>
 
-      <div className="absolute bottom-4 inset-x-4 border-t border-gray-600 bg-gray-700 flex gap-20 justify-center items-center px-20 shadow-lg py-6 rounded-lg">
-        <div className="grow">
+      <div className="px-2 flex-col absolute bottom-0 sm:bottom-4 inset-x-0 sm:inset-x-4 border-t border-gray-600 bg-gray-700 flex gap-8 sm:gap-20 justify-center items-center sm:px-20 shadow-lg py-6 sm:rounded-lg sm:flex-row">
+        <div className="grow w-full sm:w-auto">
           <div className="divide-x divide-gray-700/75 h-8 bg-gray-800/75 shadow-inner grid grid-cols-4 rounded-full overflow-hidden">
             {[
               { state: "initial", label: "Initial" },
@@ -55,7 +55,7 @@ export default function Page() {
         </div>
 
         <div>
-          <motion.p className="font-semibold h-8 flex items-center justify-center text-sm text-white text-center tabular-nums">
+          <motion.p className="font-semibold md:h-8 flex items-center justify-center text-sm text-white text-center tabular-nums">
             {useTransform(value, Math.floor)}
           </motion.p>
 
